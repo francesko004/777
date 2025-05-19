@@ -3,6 +3,6 @@
     style="backdrop-filter: blur(5px); background-color: rgba(255, 255, 255, 0.3);"
 >
     <span class="text-gray-800 text-lg font-semibold">
-        🔒 Área bloqueada! Falta {{ $minutes }} minuto(s) para você poder editar novamente.
+        🔒 Locked area! You'll be able to edit again in {{ $minutes }} minute(s).
     </span>
 </div>
