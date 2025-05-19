@@ -31,31 +31,19 @@ class DefaultSetting extends Page implements HasForms
 
     protected static string $view = 'filament.resources.setting-resource.pages.default-setting';
 
-    /**
-     * @dev  
-     * @param Model $record
-     * @return bool
-     */
     public static function canView(Model $record): bool
     {
         return auth()->user()->hasRole('admin');
     }
 
-    /**
-     * @return string|Htmlable
-     */
     public function getTitle(): string | Htmlable
     {
-        return __('AJUSTE OS DADOS DA PLATAFORMA'); 
+        return __('ADJUST THE PLATFORM DATA'); 
     }
 
     public Setting $record;
     public ?array $data = [];
 
-    /**
-     * @dev  
-     * @return void
-     */
     public function mount(): void
     {   
         $envs = DotenvEditor::load(base_path('.env'));
@@ -65,16 +53,13 @@ class DefaultSetting extends Page implements HasForms
         $this->form->fill($setting->toArray());
     }
 
-    /**
-     * @return void
-     */
     public function save()
     {
         try {
             if(env('APP_DEMO')) {
                 Notification::make()
-                    ->title('Atenção')
-                    ->body('Você não pode realizar está alteração na versão demo')
+                    ->title('Attention')
+                    ->body('You cannot make this change in the demo version')
                     ->danger()
                     ->send();
                 return;
@@ -140,32 +125,26 @@ class DefaultSetting extends Page implements HasForms
                 Cache::put('setting', $setting);
 
                 Notification::make()
-                    ->title('Dados alterados')
-                    ->body('Dados alterados com sucesso!')
+                    ->title('Data updated')
+                    ->body('Data successfully updated!')
                     ->success()
                     ->send();
 
                 redirect(route('filament.admin.resources.settings.index'));
-
             }
         } catch (Halt $exception) {
             return;
         }
     }
 
-    /**
-     * @dev  
-     * @param Form $form
-     * @return Form
-     */
     public function form(Form $form): Form
     { 
         return $form
             ->schema([
-                Section::make('ONDA GAMES CRIOU ESSA PLATAFORMA PARA VOCÊ')
+                Section::make('ONDA GAMES CREATED THIS PLATFORM FOR YOU')
                 ->description(new HtmlString('
                     <div style="font-weight: 600; display: flex; align-items: center;">
-                        SAIBA MAIS SOBRE NÓS. PARTICIPE DA NOSSA COMUNIDADE IGAMING. ACESSE AGORA! 
+                        LEARN MORE ABOUT US. JOIN OUR IGAMING COMMUNITY. ACCESS NOW! 
                         <a class="dark:text-white" 
                            style="
                                 font-size: 14px;
@@ -180,7 +159,7 @@ class DefaultSetting extends Page implements HasForms
                            " 
                            href="https://ondagames.com" 
                            target="_blank">
-                            SITE OFICIAL
+                            OFFICIAL SITE
                         </a>
                         <a class="dark:text-white" 
                            style="
@@ -196,43 +175,43 @@ class DefaultSetting extends Page implements HasForms
                            " 
                            href="https://t.me/ondagames_oficial" 
                            target="_blank">
-                            GRUPO TELEGRAM
+                            TELEGRAM GROUP
                         </a>
                     </div>
                 ')),
-                Section::make('ALTERE LOGOTIPO E DADOS')
-                    ->description('Altere o logotipo e os dados da plataforma')
+                Section::make('EDIT LOGO AND DATA')
+                    ->description('Edit the platform logo and data')
                     ->schema([
                         Group::make()->schema([
                             TextInput::make('software_name')
-                                ->label('NOME DA PLATAFORMA')
-                                ->placeholder('Digite o nome da plataforma')
+                                ->label('PLATFORM NAME')
+                                ->placeholder('Enter the platform name')
                                 ->required()
                                 ->maxLength(191),
                             TextInput::make('software_description')
-                                ->placeholder('Digite a descrição da plataforma')
-                                ->label('DESCRICÃO DA PLATAFORMA')
+                                ->placeholder('Enter the platform description')
+                                ->label('PLATFORM DESCRIPTION')
                                 ->maxLength(191),
                             TextInput::make('url_env')
-                                ->label('URL DO PAINEL ADMIN')
-                                ->placeholder('Digite a url que o painel admin vai ter')
+                                ->label('ADMIN PANEL URL')
+                                ->placeholder('Enter the admin panel URL')
                                 ->required()
                                 ->maxLength(191),
                         ])->columns(2),
                         Group::make()->schema([
                             FileUpload::make('software_favicon')
-                                ->label('FIVICON | --> [ 52x52 ]')
-                                ->placeholder('Carregue um favicon')
+                                ->label('FAVICON | --> [ 52x52 ]')
+                                ->placeholder('Upload a favicon')
                                 ->image(),
                             Group::make()->schema([
                                 FileUpload::make('software_logo_white')
-                                    ->label('LOGOTIPO 1  | --> [ 1228 x 274 ] FICA NA HOME')
-                                    ->placeholder('Carregue uma logo branca')
+                                    ->label('LOGO 1  | --> [ 1228 x 274 ] DISPLAYED ON HOMEPAGE')
+                                    ->placeholder('Upload a white logo')
                                     ->image()
                                     ->columnSpanFull(),
                                 FileUpload::make('software_logo_black')
-                                    ->label('LOGOTIPO 2  | --> [ 400x100 ] FICA NO CARREGAMENTO')
-                                    ->placeholder('Carregue uma img')
+                                    ->label('LOGO 2  | --> [ 400x100 ] DISPLAYED ON LOADING')
+                                    ->placeholder('Upload an image')
                                     ->image()
                                     ->columnSpanFull()
                             ])
@@ -242,15 +221,9 @@ class DefaultSetting extends Page implements HasForms
             ->statePath('data') ;
     }
 
-    /**
-     * @dev  
-     * @param $array
-     * @return mixed|void
-     */
     private function uploadFile($array)
     {
         if (!is_array($array) && !is_object($array)) {
-            // Retorna a string diretamente, pois não é um arquivo para upload
             return $array;
         }
     
