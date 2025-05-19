@@ -4,7 +4,7 @@
 
         <br>
         <x-filament::button type="submit" form="submit">
-            Finalizar Pagamento
+            Complete Payment
         </x-filament::button>
     </form>
 </x-filament-panels::page>
