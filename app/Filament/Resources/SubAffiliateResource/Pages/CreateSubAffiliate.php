@@ -14,14 +14,17 @@ class CreateSubAffiliate extends CreateRecord
     protected static string $resource = SubAffiliateResource::class;
 
     /**
-     * Posso manipular os dados antes da criação
+     * You can manipulate the data before creation
+     * 
      * @param array $data
      * @return Model
      */
     protected function handleRecordCreation(array $data): Model
     {
+        // Assign the current authenticated user's ID as the affiliate_id
         $data['affiliate_id'] = auth()->user()->id;
 
+        // Create and return the new model record with the manipulated data
         return static::getModel()::create($data);
     }
 }
