@@ -4,7 +4,7 @@
 
         <br>
         <x-filament::button type="submit" form="submit">
-            Atualizar dados
+            Save Changes
         </x-filament::button>
     </form>
 </x-filament-panels::page>
