@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
         <!-- Meta Tags Essenciais -->
-        <title>Cassino e Apostas Online com Bônus Exclusivos</title>
+        <title>CCasino and Online Betting with Exclusive Bonuses</title>
         <meta name="description" content="Jogue e descubra o melhor cassino online ao vivo! Aposte em esportes e cassino com bônus exclusivos. Depósitos rápidos via Pix.">
 
         <!-- Open Graph / Facebook -->
