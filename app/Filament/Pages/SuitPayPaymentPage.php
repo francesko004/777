@@ -23,13 +23,10 @@ class SuitPayPaymentPage extends Page
 
     protected static string $view = 'filament.pages.suit-pay-payment-page';
 
-    protected static ?string $navigationLabel = 'SuitPay Pagamentos';
-
-    protected static ?string $modelLabel = 'SuitPay Pagamentos';
-
-    protected static ?string $title = 'SuitPay Pagamentos';
-
-    protected static ?string $slug = 'suitpay-pagamentos';
+    protected static ?string $navigationLabel = 'SuitPay Payments';
+    protected static ?string $modelLabel = 'SuitPay Payments';
+    protected static ?string $title = 'SuitPay Payments';
+    protected static ?string $slug = 'suitpay-payments';
 
     /**
      * @dev  
@@ -37,12 +34,12 @@ class SuitPayPaymentPage extends Page
      */
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole('admin'); // Controla o acesso total à página
+        return auth()->user()->hasRole('admin'); // Controls full page access
     }
     
     public static function canView(): bool
     {
-        return auth()->user()->hasRole('admin'); // Controla a visualização de elementos específicos
+        return auth()->user()->hasRole('admin'); // Controls visibility of specific elements
     }
 
     public ?array $data = [];
@@ -64,41 +61,38 @@ class SuitPayPaymentPage extends Page
     {
         return $form
             ->schema([
-                Section::make('Detalhes de Pagamento')
+                Section::make('Payment Details')
                     ->schema([
                         Select::make('user_id')
-                            ->label('Usuários')
-                            ->placeholder('Selecione um usuário')
+                            ->label('Users')
+                            ->placeholder('Select a user')
                             ->relationship(name: 'user', titleAttribute: 'name')
-                            ->options(
-                                fn($get) => User::query()
-                                    ->pluck('name', 'id')
-                            )
+                            ->options(fn($get) => User::query()->pluck('name', 'id'))
                             ->searchable()
                             ->preload()
                             ->live()
                             ->required(),
                         TextInput::make('pix_key')
-                            ->label('Chave Pix')
-                            ->placeholder('Digite a chave Pix')
+                            ->label('Pix Key')
+                            ->placeholder('Enter the Pix key')
                             ->required(),
                         Select::make('pix_type')
-                            ->label('Tipo de Chave')
-                            ->placeholder('Selecione o tipo de chave')
+                            ->label('Key Type')
+                            ->placeholder('Select key type')
                             ->options([
-                                'document' => 'Documento',
-                                'phoneNumber' => 'Telefone',
-                                'randomKey' => 'Chave aleatória',
-                                'paymentCode' => 'Código de pagamento',
+                                'document' => 'Document',
+                                'phoneNumber' => 'Phone Number',
+                                'randomKey' => 'Random Key',
+                                'paymentCode' => 'Payment Code',
                             ]),
                         TextInput::make('amount')
-                            ->label('Valor')
-                            ->placeholder('Digite um valor')
+                            ->label('Amount')
+                            ->placeholder('Enter an amount')
                             ->required()
                             ->numeric(),
                         Textarea::make('observation')
-                            ->label('Observação')
-                            ->placeholder('Deixe uma observação caso tenha')
+                            ->label('Observation')
+                            ->placeholder('Leave an observation if needed')
                             ->rows(5)
                             ->cols(10)
                             ->columnSpanFull()
@@ -114,8 +108,8 @@ class SuitPayPaymentPage extends Page
     {
         if(env('APP_DEMO')) {
             Notification::make()
-                ->title('Atenção')
-                ->body('Você não pode realizar está alteração na versão demo')
+                ->title('Warning')
+                ->body('You cannot make changes in demo mode')
                 ->danger()
                 ->send();
             return;
@@ -139,21 +133,21 @@ class SuitPayPaymentPage extends Page
 
             if($resp) {
                 Notification::make()
-                    ->title('Saque solicitado')
-                    ->body('Saque solicitado com sucesso')
+                    ->title('Withdrawal Requested')
+                    ->body('Withdrawal requested successfully')
                     ->success()
                     ->send();
             }else{
                 Notification::make()
-                    ->title('Erro no saque')
-                    ->body('Erro ao solicitar o saque')
+                    ->title('Withdrawal Error')
+                    ->body('Error requesting withdrawal')
                     ->danger()
                     ->send();
             }
         }else{
             Notification::make()
-                ->title('Erro ao salvar')
-                ->body('Erro ao salvar a requisição do saque')
+                ->title('Save Error')
+                ->body('Error saving withdrawal request')
                 ->danger()
                 ->send();
         }
