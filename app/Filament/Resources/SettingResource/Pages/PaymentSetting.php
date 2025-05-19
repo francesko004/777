@@ -33,7 +33,7 @@ class PaymentSetting extends Page implements HasForms
 
     public function getTitle(): string | Htmlable
     {
-        return __('AREA FINANCEIRA');
+        return __('FINANCIAL AREA');
     }
 
     public static function canView(Model $record): bool
@@ -53,8 +53,8 @@ class PaymentSetting extends Page implements HasForms
         try {
             if (env('APP_DEMO')) {
                 Notification::make()
-                    ->title('Atenção')
-                    ->body('Você não pode realizar esta alteração na versão demo')
+                    ->title('Warning')
+                    ->body('You cannot make this change in demo version')
                     ->danger()
                     ->send();
                 return;
@@ -66,8 +66,8 @@ class PaymentSetting extends Page implements HasForms
                 Cache::put('setting', $setting);
 
                 Notification::make()
-                    ->title('Dados alterados')
-                    ->body('Dados alterados com sucesso!')
+                    ->title('Data Updated')
+                    ->body('Data updated successfully!')
                     ->success()
                     ->send();
 
@@ -82,10 +82,10 @@ class PaymentSetting extends Page implements HasForms
     {
         return $form
             ->schema([
-                Section::make('ONDA GAMES CRIOU ESSA PLATAFORMA PARA VOCÊ')
+                Section::make('ONDA GAMES CREATED THIS PLATFORM FOR YOU')
                 ->description(new HtmlString('
                     <div style="font-weight: 600; display: flex; align-items: center;">
-                        SAIBA MAIS SOBRE NÓS. PARTICIPE DA NOSSA COMUNIDADE IGAMING. ACESSE AGORA! 
+                        LEARN MORE ABOUT US. JOIN OUR IGAMING COMMUNITY. ACCESS NOW! 
                         <a class="dark:text-white" 
                            style="
                                 font-size: 14px;
@@ -100,7 +100,7 @@ class PaymentSetting extends Page implements HasForms
                            " 
                            href="https://ondagames.com" 
                            target="_blank">
-                            SITE OFICIAL
+                            OFFICIAL SITE
                         </a>
                         <a class="dark:text-white" 
                            style="
@@ -116,70 +116,69 @@ class PaymentSetting extends Page implements HasForms
                            " 
                            href="https://t.me/ondagames_oficial" 
                            target="_blank">
-                            GRUPO TELEGRAM
+                            TELEGRAM GROUP
                         </a>
                     </div>
                 ')),
 
-                Section::make('AJUSTE DE COMISSÃO CPA')
-                ->description('Ajuste o valor da comissão CPA e depósito mínimo para o afiliado ganhar o CPA.')
+                Section::make('CPA COMMISSION SETTINGS')
+                ->description('Adjust the CPA commission value and minimum deposit for the affiliate to earn the CPA.')
                 ->schema([
                     TextInput::make('cpa_baseline')
-                        ->label('DEPÓSITO MÍNIMO CPA')
-                        ->helperText('Valor mínimo que o usuário deve depositar para o afiliado ganhar o CPA.')
+                        ->label('MINIMUM CPA DEPOSIT')
+                        ->helperText('Minimum value the user must deposit for the affiliate to earn the CPA.')
                         ->numeric()
-                        ->suffix('R$ ')
+                        ->suffix('R$')
                         ->maxLength(191),
                     TextInput::make('cpa_value')
-                        ->label('AFILIADO CPA')
-                        ->helperText('Valor da comissão CPA que o afiliado ganhará.')
+                        ->label('AFFILIATE CPA')
+                        ->helperText('CPA commission value the affiliate will earn.')
                         ->numeric()
                         ->suffix('R$')
                         ->maxLength(191)
                 ])->columns(2),
 
-                Section::make('AJUSTE AS CONFIGURAÇÕES DE PAGAMENTO')
-                    ->description('Você pode ajustar plataforma de saque, depósito e limites')
+                Section::make('ADJUST PAYMENT SETTINGS')
+                    ->description('You can adjust the withdrawal, deposit platform and limits.')
                     ->schema([
                         Select::make("saque")
-                            ->label("RESPONSAVEL PELO SISTEMA DE SAQUE")
+                            ->label("WITHDRAWAL SYSTEM PROVIDER")
                             ->options([
                                 "ezzepay" => "EzzePay",
                                 "suitpay" => "SuitPay",
                                 "digitopay" => "Digito Pay",
                                 "bspay" => "BsPay"
-                                
                             ]),
                         TextInput::make('min_deposit')
-                            ->label('DEPÓSITO MÍNIMO')
+                            ->label('MINIMUM DEPOSIT')
                             ->numeric()
                             ->maxLength(191),
                         TextInput::make('max_deposit')
-                            ->label('DEPÓSITO MÁXIMO')
+                            ->label('MAXIMUM DEPOSIT')
                             ->numeric()
                             ->maxLength(191),
                         TextInput::make('min_withdrawal')
-                            ->label('SAQUE MÍNIMO')
+                            ->label('MINIMUM WITHDRAWAL')
                             ->numeric()
                             ->maxLength(191),
                         TextInput::make('max_withdrawal')
-                            ->label('SAQUE MÁXIMO')
+                            ->label('MAXIMUM WITHDRAWAL')
                             ->numeric()
                             ->maxLength(191),
                         TextInput::make('initial_bonus')
-                            ->label('PORCENTAGEM DE BÔNUS')
+                            ->label('BONUS PERCENTAGE')
                             ->numeric()
                             ->suffix('%')
                             ->maxLength(191),
-                    Section::make('GATEWAYS DE PAGAMENTO')
-                        ->description('Ative ou desative os gateways de sua preferência.')
+                    Section::make('PAYMENT GATEWAYS')
+                        ->description('Enable or disable the gateways of your choice.')
                         ->schema([
                             Toggle::make('ezzepay_is_enable')
                                 ->label('EzzePay'),
                             Toggle::make('digito_is_enable')
                                 ->label('DigitoPay'),
                             Toggle::make('bspay_is_enable')
-                                ->label('bspay'),
+                                ->label('BsPay'),
                             Toggle::make('suitpay_is_enable')
                                 ->label('SuitPay'),
                         ])->columns(3),
