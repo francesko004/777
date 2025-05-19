@@ -43,16 +43,16 @@ class ListUsers extends ListRecords
             ->toArray();
 
         return [
-            'all' => Tab::make('USUÁRIOS CADASTRADOS')
+            'all' => Tab::make('REGISTERED USERS')
                 ->modifyQueryUsing(function ($query) {
                     return $query;
                 }),
 
-            'admins' => Tab::make('ADMINISTRADORES ')
+            'admins' => Tab::make('ADMINISTRATORS ')
                 ->modifyQueryUsing(function ($query) use ($admins) {
                     return $query->whereIn('id', $admins);
                 }),
-            'affiliates' => Tab::make('AFILIADOS CADASTRADOS')
+            'affiliates' => Tab::make('REGISTERED AFFILIATES')
                 ->modifyQueryUsing(function ($query) use ($afiliados) {
                     return $query->whereIn('id', $afiliados);
                 }),
