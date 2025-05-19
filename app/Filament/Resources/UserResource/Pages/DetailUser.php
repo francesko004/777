@@ -16,7 +16,7 @@ use Filament\Forms\Components\Component;
 class DetailUser extends Page
 {
 
-    protected static ?string $title = 'Detalhes';
+    protected static ?string $title = 'Details';
 
     protected static string $resource = UserResource::class;
 
