@@ -13,16 +13,14 @@ use Filament\Pages\Page;
 use Filament\Support\Exceptions\Halt;
 use Illuminate\Database\Eloquent\Model;
 use Jackiedo\DotenvEditor\Facades\DotenvEditor;
-use Filament\Forms\Components\Select; // Adicione esta linha
+use Filament\Forms\Components\Select;
 
 class SettingMailPage extends Page
 {
     use InteractsWithForms;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-
     protected static string $view = 'filament.pages.setting-mail-page';
-
     public ?array $data = [];
     public SettingMail $setting;
 
@@ -32,12 +30,12 @@ class SettingMailPage extends Page
      */
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole('admin'); // Controla o acesso total à página
+        return auth()->user()->hasRole('admin'); // Controls full page access
     }
     
     public static function canView(): bool
     {
-        return auth()->user()->hasRole('admin'); // Controla a visualização de elementos específicos
+        return auth()->user()->hasRole('admin'); // Controls visibility of specific elements
     }
 
     /**
@@ -46,10 +44,10 @@ class SettingMailPage extends Page
     public function mount(): void
     {
         $smtp = SettingMail::first();
-        if(!empty($smtp)) {
+        if (!empty($smtp)) {
             $this->setting = $smtp;
             $this->form->fill($this->setting->toArray());
-        }else{
+        } else {
             $this->form->fill();
         }
     }
@@ -62,50 +60,50 @@ class SettingMailPage extends Page
     {
         return $form
             ->schema([
-                Section::make('ONDA GAMES CRIOU ESSA PLATAFORMA PARA VOCÊ')
-                ->description(new HtmlString('
-                    <div style="font-weight: 600; display: flex; align-items: center;">
-                        SAIBA MAIS SOBRE NÓS. PARTICIPE DA NOSSA COMUNIDADE IGAMING. ACESSE AGORA! 
-                        <a class="dark:text-white" 
-                           style="
-                                font-size: 14px;
-                                font-weight: 600;
-                                width: 127px;
-                                display: flex;
-                                background-color: #f800ff;
-                                padding: 10px;
-                                border-radius: 11px;
-                                justify-content: center;
-                                margin-left: 10px;
-                           " 
-                           href="https://ondagames.com" 
-                           target="_blank">
-                            SITE OFICIAL
-                        </a>
-                        <a class="dark:text-white" 
-                           style="
-                                font-size: 14px;
-                                font-weight: 600;
-                                width: 127px;
-                                display: flex;
-                                background-color: #f800ff;
-                                padding: 10px;
-                                border-radius: 11px;
-                                justify-content: center;
-                                margin-left: 10px;
-                           " 
-                           href="https://t.me/ondagames_oficial" 
-                           target="_blank">
-                            GRUPO TELEGRAM
-                        </a>
-                    </div>
-                ')),
-                Section::make('CREDENCIAIS DE SERVIDOR DE E-MAIL')
-                    ->description('Coloque suas credenciais para o envio de e-mails de notificação')
+                Section::make('ONDA GAMES CREATED THIS PLATFORM FOR YOU')
+                    ->description(new HtmlString('
+                        <div style="font-weight: 600; display: flex; align-items: center;">
+                            LEARN MORE ABOUT US. JOIN OUR IGAMING COMMUNITY. ACCESS NOW! 
+                            <a class="dark:text-white" 
+                               style="
+                                    font-size: 14px;
+                                    font-weight: 600;
+                                    width: 127px;
+                                    display: flex;
+                                    background-color: #f800ff;
+                                    padding: 10px;
+                                    border-radius: 11px;
+                                    justify-content: center;
+                                    margin-left: 10px;
+                               " 
+                               href="https://ondagames.com " 
+                               target="_blank">
+                                OFFICIAL SITE
+                            </a>
+                            <a class="dark:text-white" 
+                               style="
+                                    font-size: 14px;
+                                    font-weight: 600;
+                                    width: 127px;
+                                    display: flex;
+                                    background-color: #f800ff;
+                                    padding: 10px;
+                                    border-radius: 11px;
+                                    justify-content: center;
+                                    margin-left: 10px;
+                               " 
+                               href="https://t.me/ondagames_oficial " 
+                               target="_blank">
+                                TELEGRAM GROUP
+                            </a>
+                        </div>
+                    ')),
+                Section::make('EMAIL SERVER CREDENTIALS')
+                    ->description('Enter your credentials for sending notification emails')
                     ->schema([
                         Select::make('software_smtp_type')
-                            ->label('PROTOCOLO')
-                            ->placeholder('Selecione o mailer')
+                            ->label('PROTOCOL')
+                            ->placeholder('Select the mailer')
                             ->options([
                                 'imap' => 'IMAP',
                                 'smtp' => 'SMTP',
@@ -113,43 +111,41 @@ class SettingMailPage extends Page
                             ])
                             ->required(),
                         TextInput::make('software_smtp_mail_host')
-                            ->label('ENDEREÇO DE SERVIDOR')
-                            ->placeholder('Digite seu mail host')
+                            ->label('SERVER ADDRESS')
+                            ->placeholder('Enter your mail host')
                             ->maxLength(191),
                         TextInput::make('software_smtp_mail_port')
-                            ->label('Porta')
-                            ->placeholder('PORTA DE SERVIDOR')
+                            ->label('PORT')
+                            ->placeholder('SERVER PORT')
                             ->maxLength(191),
                         TextInput::make('software_smtp_mail_username')
-                            ->label('Usuário')
-                            ->placeholder('NOME DE USUÁRIO')
+                            ->label('USERNAME')
+                            ->placeholder('USER NAME')
                             ->maxLength(191),
                         TextInput::make('software_smtp_mail_password')
-                            ->label('Senha')
-                            ->placeholder('SENHA DE USUÁRIO')
+                            ->label('PASSWORD')
+                            ->placeholder('USER PASSWORD')
                             ->maxLength(191),
                         Select::make('software_smtp_mail_encryption')
-                            ->label('ENCRYPTAÇÃO')
-                            ->placeholder('Selecione a criptografia')
+                            ->label('ENCRYPTION')
+                            ->placeholder('Select encryption')
                             ->options([
                                 'ssl' => 'SSL',
                                 'tls' => 'TLS',
                             ])
                             ->required(),
                         TextInput::make('software_smtp_mail_from_address')
-                            ->label('CABEÇALHO DE E-MAIL')
-                            ->placeholder('Digite o endereço de E-mail de Cabeçalho')
+                            ->label('EMAIL HEADER')
+                            ->placeholder('Enter Header Email Address')
                             ->maxLength(191),
                         TextInput::make('software_smtp_mail_from_name')
-                            ->label('NOME DE CABEÇALHO')
-                            ->placeholder('Digite o nome de Cabeçalho')
+                            ->label('HEADER NAME')
+                            ->placeholder('Enter Header Name')
                             ->maxLength(191),
                     ])->columns(4),
             ])
             ->statePath('data');
     }
-
-
 
     /**
      * @return void
@@ -157,20 +153,19 @@ class SettingMailPage extends Page
     public function submit(): void
     {
         try {
-            if(env('APP_DEMO')) {
+            if (env('APP_DEMO')) {
                 Notification::make()
-                    ->title('Atenção')
-                    ->body('Você não pode realizar está alteração na versão demo')
+                    ->title('Warning')
+                    ->body('You cannot make changes in demo mode')
                     ->danger()
                     ->send();
                 return;
             }
 
             $setting = SettingMail::first();
-            if(!empty($setting)) {
-                if(!empty($this->data['software_smtp_type'])) {
+            if (!empty($setting)) {
+                if (!empty($this->data['software_smtp_type'])) {
                     $envs = DotenvEditor::load(base_path('.env'));
-
                     $envs->setKeys([
                         'MAIL_MAILER' => $this->data['software_smtp_type'],
                         'MAIL_HOST' => $this->data['software_smtp_mail_host'],
@@ -181,32 +176,29 @@ class SettingMailPage extends Page
                         'MAIL_FROM_ADDRESS' => $this->data['software_smtp_mail_from_address'],
                         'MAIL_FROM_NAME' => $this->data['software_smtp_mail_from_name'],
                     ]);
-
                     $envs->save();
                 }
 
-                if($setting->update($this->data)) {
+                if ($setting->update($this->data)) {
                     Notification::make()
-                        ->title('ACESSE ONDAGAMES.COM')
-                        ->body('Suas chaves foram alteradas com sucesso!')
+                        ->title('VISIT ONDAGAMES.COM')
+                        ->body('Your keys were successfully updated!')
                         ->success()
                         ->send();
                 }
-            }else{
-                if(SettingMail::create($this->data)) {
+            } else {
+                if (SettingMail::create($this->data)) {
                     Notification::make()
-                        ->title('ACESSE ONDAGAMES.COM')
-                        ->body('Suas chaves foram criadas com sucesso!')
+                        ->title('VISIT ONDAGAMES.COM')
+                        ->body('Your keys were successfully created!')
                         ->success()
                         ->send();
                 }
             }
-
-
         } catch (Halt $exception) {
             Notification::make()
-                ->title('Erro ao alterar dados!')
-                ->body('Erro ao alterar dados!')
+                ->title('Error updating data!')
+                ->body('Error updating data!')
                 ->danger()
                 ->send();
         }
