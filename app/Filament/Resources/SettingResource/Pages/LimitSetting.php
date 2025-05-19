@@ -44,7 +44,7 @@ class LimitSetting extends Page implements HasForms
      */
     public function getTitle(): string | Htmlable
     {
-        return __('LIMITE DE SAQUE POR PERÍODO');
+        return __('WITHDRAWAL LIMIT PER PERIOD');
     }
 
     public Setting $record;
@@ -70,8 +70,8 @@ class LimitSetting extends Page implements HasForms
         try {
             if (env('APP_DEMO')) {
                 Notification::make()
-                    ->title('Atenção')
-                    ->body('Você não pode realizar está alteração na versão demo')
+                    ->title('Warning')
+                    ->body('You cannot perform this action in the demo version')
                     ->danger()
                     ->send();
                 return;
@@ -83,8 +83,8 @@ class LimitSetting extends Page implements HasForms
                 Cache::put('setting', $setting);
 
                 Notification::make()
-                    ->title('Dados alterados')
-                    ->body('Dados alterados com sucesso!')
+                    ->title('Data updated')
+                    ->body('Data successfully updated!')
                     ->success()
                     ->send();
 
@@ -104,10 +104,10 @@ class LimitSetting extends Page implements HasForms
     {
         return $form
             ->schema([
-                Section::make('ONDA GAMES CRIOU ESSA PLATAFORMA PARA VOCÊ')
+                Section::make('ONDA GAMES CREATED THIS PLATFORM FOR YOU')
                     ->description(new HtmlString('
                     <div style="font-weight: 600; display: flex; align-items: center;">
-                        SAIBA MAIS SOBRE NÓS. PARTICIPE DA NOSSA COMUNIDADE IGAMING. ACESSE AGORA!
+                        LEARN MORE ABOUT US. JOIN OUR IGAMING COMMUNITY. ACCESS NOW!
                         <a class="dark:text-white"
                            style="
                                 font-size: 14px;
@@ -122,7 +122,7 @@ class LimitSetting extends Page implements HasForms
                            "
                            href="https://ondagames.com"
                            target="_blank">
-                            SITE OFICIAL
+                            OFFICIAL SITE
                         </a>
                         <a class="dark:text-white"
                            style="
@@ -138,23 +138,23 @@ class LimitSetting extends Page implements HasForms
                            "
                            href="https://t.me/ondagames_oficial"
                            target="_blank">
-                            GRUPO TELEGRAM
+                            TELEGRAM GROUP
                         </a>
                     </div>
                 ')),
-                Section::make('AJUSTE O LIMITE POR PERÍODO')
-                    ->description('Voce pode definir quanto um usuário pode sacar por período.')
+                Section::make('ADJUST THE LIMIT PER PERIOD')
+                    ->description('You can set how much a user can withdraw per period.')
                     ->schema([
                         TextInput::make('withdrawal_limit')
-                            ->label('QUANTO USUÁRIO PODE SACAR?')
+                            ->label('HOW MUCH CAN A USER WITHDRAW?')
                             ->numeric(),
                         Select::make('withdrawal_period')
-                            ->label('QUAL O PERIODO DE SAQUE?')
+                            ->label('WHAT IS THE WITHDRAWAL PERIOD?')
                             ->options([
-                                'daily' => 'DIA',
-                                'weekly' => 'SEMANA',
-                                'monthly' => 'MÊS',
-                                'yearly' => 'ANO',
+                                'daily' => 'DAY',
+                                'weekly' => 'WEEK',
+                                'monthly' => 'MONTH',
+                                'yearly' => 'YEAR',
                             ]),
                     ])->columns(2)
             ])
