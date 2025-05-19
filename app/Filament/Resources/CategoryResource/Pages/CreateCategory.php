@@ -14,9 +14,8 @@ class CreateCategory extends CreateRecord
 {
     protected static string $resource = CategoryResource::class;
 
-
     /**
-     * Posso manipular os dados antes da criação
+     * I can manipulate data before creation
      * @param array $data
      * @return Model
      */
@@ -28,22 +27,14 @@ class CreateCategory extends CreateRecord
     }
 
     /**
-     * @return string|null
-     */
-//    protected function getCreatedNotificationTitle(): ?string
-//    {
-//        return 'Categoria criada com sucesso!';
-//    }
-
-    /**
      * @return Notification|null
      */
     protected function getCreatedNotification(): ?Notification
     {
         return Notification::make()
             ->success()
-            ->title('Categoria criada')
-            ->body('Categoria criada com sucesso.');
+            ->title('Category created')
+            ->body('Category successfully created.');
     }
 
     protected function beforeFill(): void
@@ -68,7 +59,6 @@ class CreateCategory extends CreateRecord
 
     protected function beforeCreate(): void
     {
-
         // Runs before the form fields are saved to the database.
     }
 
