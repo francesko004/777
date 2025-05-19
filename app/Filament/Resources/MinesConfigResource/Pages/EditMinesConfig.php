@@ -12,13 +12,13 @@ class EditMinesConfig extends EditRecord
 
     public function mount($record = null): void
     {
-        // Tenta carregar o único registro da configuração
+        // Try to load the single configuration record
         $found = GameConfig::first();
 
-        // Se não existir, cria um registro com valores padrão
+        // If none exists, create one with default values
         if (!$found) {
             $found = GameConfig::create([
-                'bombs_count'             => 5,          // se este campo for necessário, ou remova se não for usado
+                'bombs_count'             => 5,          // if this field is required, or remove it if unused
                 'min_bet'                 => 1,
                 'max_bet'                 => 100,
                 'meta_arrecadacao'        => 0,
@@ -37,7 +37,7 @@ class EditMinesConfig extends EditRecord
             ]);
         }
 
-        // Define o registro a ser editado
+        // Set the record to be edited
         $record = $found->id;
 
         parent::mount($record);
