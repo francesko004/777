@@ -12,7 +12,7 @@ class EditGameOpenConfig extends EditRecord
 
     public function mount($record = null): void
     {
-        // Carrega ou cria
+        // Load or create the record
         $found = GameOpenConfig::first();
         if (!$found) {
             $found = GameOpenConfig::create([
