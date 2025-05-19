@@ -11,14 +11,14 @@ class EditDistributionSystem extends EditRecord
     protected static string $resource = DistributionSystemResource::class;
 
     /**
-     * Ao montar a página, pegamos (ou criamos) o único registro.
+     * When mounting the page, we fetch or create the single record.
      */
     public function mount($record = null): void
     {
-        // Se já existir um registro, pega o primeiro
+        // If a record already exists, get the first one
         $found = DistributionSystem::first();
 
-        // Se não existir, cria
+        // If no record exists, create one with default values
         if (! $found) {
             $found = DistributionSystem::create([
                 'meta_arrecadacao' => 0,
@@ -32,15 +32,15 @@ class EditDistributionSystem extends EditRecord
             ]);
         }
 
-        // Força o $record a ser o ID do registro encontrado/criado
+        // Set $record to the ID of the found/created record
         $record = $found->id;
 
-        // Agora chama o mount original do EditRecord
+        // Call the original EditRecord's mount method
         parent::mount($record);
     }
 
     /**
-     * Redireciona de volta para a própria rota (index) após salvar
+     * Redirect back to the index route after saving
      */
     protected function getRedirectUrl(): string
     {
