@@ -24,7 +24,6 @@ use Jackiedo\DotenvEditor\Facades\DotenvEditor;
 class SettingSpin extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-
     protected static string $view = 'filament.pages.setting-spin';
 
     /**
@@ -33,12 +32,12 @@ class SettingSpin extends Page
      */
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole('admin'); // Controla o acesso total à página
+        return auth()->user()->hasRole('admin'); // Controls full page access
     }
     
     public static function canView(): bool
     {
-        return auth()->user()->hasRole('admin'); // Controla a visualização de elementos específicos
+        return auth()->user()->hasRole('admin'); // Controls visibility of specific elements
     }
 
     /**
@@ -78,8 +77,7 @@ class SettingSpin extends Page
             Action::make('save')
                 ->label(__('Submit'))
                 ->action(fn () => $this->submit())
-                ->submit('submit')
-            ,
+                ->submit('submit'),
         ];
     }
 
@@ -91,8 +89,8 @@ class SettingSpin extends Page
         try {
             if(env('APP_DEMO')) {
                 Notification::make()
-                    ->title('Atenção')
-                    ->body('Você não pode realizar está alteração na versão demo')
+                    ->title('Warning')
+                    ->body('You cannot make changes in demo mode')
                     ->danger()
                     ->send();
                 return;
@@ -100,7 +98,6 @@ class SettingSpin extends Page
 
             $setting = SpinConfigs::first();
             if(!empty($setting)) {
-
                 $updatedData = [];
                 foreach($this->data['prizesArray'] as $k => $v) {
                     $v['value'] = floatval($v['value']);
@@ -109,8 +106,8 @@ class SettingSpin extends Page
 
                 if($setting->update(['prizes' => $updatedData])) {
                     Notification::make()
-                        ->title('ACESSE ONDAGAMES.COM')
-                        ->body('Dados alterados com sucesso!')
+                        ->title('VISIT ONDAGAMES.COM')
+                        ->body('Data updated successfully!')
                         ->success()
                         ->send();
 
@@ -119,8 +116,8 @@ class SettingSpin extends Page
             }
         } catch (Halt $exception) {
             Notification::make()
-                ->title('Erro ao alterar dados!')
-                ->body('Erro ao alterar dados!')
+                ->title('Error updating data!')
+                ->body('Error updating data!')
                 ->danger()
                 ->send();
         }
@@ -134,25 +131,19 @@ class SettingSpin extends Page
     {
         return $form
             ->schema([
-                Section::make('Ajustes do Spin')
+                Section::make('Spin Settings')
                     ->schema([
                         Repeater::make('prizesArray')
                             ->schema([
                                 TextInput::make('currency')
-                                    ->label('Moeda')
+                                    ->label('Currency')
                                     ->required(),
                                 TextInput::make('value')
-                                    ->label('Valor')
+                                    ->label('Value')
                                     ->numeric()
                                     ->required(),
                             ])
-//                            ->itemLabel(function (array $state): ?string {
-//
-//                                dd($state);
-//
-//                            })
                     ]),
-
             ])
             ->statePath('data');
     }
@@ -168,7 +159,7 @@ class SettingSpin extends Page
     /**
      * @return array
      */
-    public function getVisibleWidgets(): array
+    protected function getVisibleWidgets(): array
     {
         return $this->filterVisibleWidgets($this->getWidgets());
     }
@@ -178,9 +169,7 @@ class SettingSpin extends Page
      */
     public function getWidgets(): array
     {
-        return [
-
-        ];
+        return [];
     }
 
     /**
@@ -188,9 +177,7 @@ class SettingSpin extends Page
      */
     protected function getFooterWidgets(): array
     {
-        return [
-
-        ];
+        return [];
     }
 
     public function getHeaderWidgetsColumns(): int | array
