@@ -24,7 +24,7 @@ class ChangePasswordUser extends Page implements HasForms
 
     protected static string $resource = UserResource::class;
     protected static string $view = 'filament.resources.user-resource.pages.change-password-user';
-    protected static ?string $title = 'Alterar Senha';
+    protected static ?string $title = 'Change Password';
 
     public function mount(): void
     {
@@ -33,25 +33,25 @@ class ChangePasswordUser extends Page implements HasForms
 
     public function save()
     {
-        // 1. Verifica se a senha extra (admin_password) informada confere com a definida no .env
+        // 1. Check if the extra password (admin_password) matches the one defined in .env
         if (!isset($this->data['admin_password']) || $this->data['admin_password'] !== env('TOKEN_DE_2FA')) {
             Notification::make()
-                ->title('Senha incorreta')
-                ->body('A senha de confirmação não confere.')
+                ->title('Incorrect Password')
+                ->body('The confirmation password does not match.')
                 ->danger()
                 ->send();
-            // Interrompe a execução sem salvar
+            // Stop execution without saving
             return;
         }
 
         try {
             $user = User::find($this->record->id);
-            // Atualiza somente se as informações já foram validadas (assumindo que 'confirm_password' está validada no form)
+            // Update only if information has been validated (assuming 'confirm_password' is validated in the form)
             $user->update(['password' => $this->data['password']]);
 
             Notification::make()
-                ->title('Senha Alterada')
-                ->body('A senha foi alterada com sucesso! O usuário precisará relogar.')
+                ->title('Password Changed')
+                ->body('The password was successfully changed! The user will need to relogin.')
                 ->success()
                 ->send();
         } catch (Halt $exception) {
@@ -62,26 +62,26 @@ class ChangePasswordUser extends Page implements HasForms
     public function getFormSchema(): array
     {
         return [
-            Section::make('TROQUE A SENHA DO USUÁRIO')
-                ->description('Após alterar a senha, o usuário será desconectado e deverá fazer login novamente.')
+            Section::make('CHANGE THE USER PASSWORD')
+                ->description('After changing the password, the user will be logged out and will need to log in again.')
                 ->schema([
                     TextInput::make('password')
-                        ->label('SENHA DO USUÁRIO')
-                        ->placeholder('Digite a nova senha')
+                        ->label('USER PASSWORD')
+                        ->placeholder('Enter the new password')
                         ->password()
                         ->required()
                         ->maxLength(191),
                     TextInput::make('confirm_password')
-                        ->label('REPITA A SENHA')
-                        ->placeholder('Confirme a nova senha')
+                        ->label('REPEAT PASSWORD')
+                        ->placeholder('Confirm the new password')
                         ->password()
                         ->required()
-                        ->confirmed() // Garante que o valor seja igual ao campo "password"
+                        ->confirmed() // Ensures the value matches the "password" field
                         ->maxLength(191),
-                    // Novo campo para a senha extra do admin
+                    // New field for the admin extra password
                     TextInput::make('admin_password')
-                        ->label('TOKEN DE 2FA')
-                        ->placeholder('Digite a senha de 2fa de confirmação')
+                        ->label('2FA TOKEN')
+                        ->placeholder('Enter the 2fa confirmation password')
                         ->password()
                         ->required()
                         ->maxLength(191),
