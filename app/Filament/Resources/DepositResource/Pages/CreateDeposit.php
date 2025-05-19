@@ -13,13 +13,12 @@ class CreateDeposit extends CreateRecord
     protected static string $resource = DepositResource::class;
 
     /**
-     * Posso manipular os dados antes da criação
+     * I can manipulate the data before creation
      * @param array $data
      * @return Model
      */
     protected function handleRecordCreation(array $data): Model
     {
-
         return static::getModel()::create($data);
     }
 }
