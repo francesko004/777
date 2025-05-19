@@ -10,9 +10,7 @@ use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Notifications\Notification;
 use Filament\Tables\Contracts\HasTable;
-
 use Filament\Pages\Page;
-
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -28,10 +26,10 @@ class DetailsAffiliate extends Page implements HasTable
 
     protected static string $view = 'filament.pages.affiliateDetails';
 
-    protected static ?string $title = 'Histórico do afiliado';
+    protected static ?string $title = 'Affiliate History'; // Translated from 'Histórico do afiliado'
     protected static ?string $model = AffiliateLogs::class;
 
-    protected static ?string $slug = 'afiliado/details/{provider}';
+    protected static ?string $slug = 'affiliate/details/{provider}'; // Translated from 'afiliado/details/{provider}'
     protected ?string $id = null;
   
     public ?array $data = [
@@ -44,12 +42,12 @@ class DetailsAffiliate extends Page implements HasTable
      */
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole('admin'); // Controla o acesso total à página
+        return auth()->user()->hasRole('admin'); // Controls full access to the page
     }
     
     public static function canView(): bool
     {
-        return auth()->user()->hasRole('admin'); // Controla a visualização de elementos específicos
+        return auth()->user()->hasRole('admin'); // Controls visibility of specific elements
     }
  
     public function mount($provider){
@@ -57,82 +55,75 @@ class DetailsAffiliate extends Page implements HasTable
             $this->data['id'] = $provider;
         }
     }
- 
 
     public function table(Table $table): Table
     {  
-       
         return $table
-        ->query(self::$model::query())
-       
-        ->columns([
-
-            TextColumn::make("commission_type")->label("Tipo de Comissão")->formatStateUsing(function($record) {
-                if ($record->commission_type == "revshare") {
-                    return "RevShare";
-                } else {
-                    return "CPA";
-                }  
-            })->default("Indefinido"),
-            TextColumn::make("commission")->label("Valor da comissão")->formatStateUsing(function($record) {
-                $count = number_format($record->commission, 2, ",", ",");
-                
-                return "R$". $count;
-            })->default(0),
-            TextColumn::make("type")->label("Tipo")->formatStateUsing(function($record){
-                if($record->type == "decrement"){
-                    return "Ganho";
-                }else{
-                    return "Perca";
-                }
-            }),
-            TextColumn::make("created_at")->label("Data")->dateTime()
-           
-
-        ])->actions([
-          
-            
-        ])->filters([
-            Filter::make('created_at')
-            
-            ->form([
-                DatePicker::make('created_from')->label("Criado a partir de"),
-                DatePicker::make('created_until')->label("Criado até"),
-            ])
-            ->query(function (Builder $query, array $data): Builder {
-                return $query
-                  
-                    ->where("user_id",$this->data['id'])
-                    ->when(
-                        $data['created_from'],
-                        fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
-                    )
-                    ->when(
-                        $data['created_until'],
-                        fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
-                    );
-                   
-
+            ->query(self::$model::query())
+            ->columns([
+                TextColumn::make("commission_type")
+                    ->label("Commission Type") // Translated from "Tipo de Comissão"
+                    ->formatStateUsing(function($record) {
+                        if ($record->commission_type == "revshare") {
+                            return "RevShare";
+                        } else {
+                            return "CPA";
+                        }  
                     })
-            ->indicateUsing(function (array $data): array {
-                $indicators = [];
+                    ->default("Undefined"), // Translated from "Indefinido"
 
-                if ($data['created_from'] ?? null) {
-                    $indicators['created_from'] = 'Criado a partir de ' . Carbon::parse($data['created_from'])->toFormattedDateString();
-                }
+                TextColumn::make("commission")
+                    ->label("Commission Value") // Translated from "Valor da comissão"
+                    ->formatStateUsing(function($record) {
+                        $count = number_format($record->commission, 2, ",", ",");
+                        return "R$". $count;
+                    })
+                    ->default(0),
 
-                if ($data['created_until'] ?? null) {
-                    $indicators['created_until'] = 'Criado até ' . Carbon::parse($data['created_until'])->toFormattedDateString();
-                }
+                TextColumn::make("type")
+                    ->label("Type")
+                    ->formatStateUsing(function($record){
+                        if($record->type == "decrement"){
+                            return "Earnings"; // Translated from "Ganho"
+                        } else {
+                            return "Loss"; // Translated from "Perca"
+                        }
+                    }),
 
-                return $indicators;
-            })
-        ]);
+                TextColumn::make("created_at")->label("Date")->dateTime() // Translated from "Data"
+            ])
+            ->actions([])
+            ->filters([
+                Filter::make('created_at')
+                    ->form([
+                        DatePicker::make('created_from')->label("Created From"), // Translated from "Criado a partir de"
+                        DatePicker::make('created_until')->label("Created Until"), // Translated from "Criado até"
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->where("user_id", $this->data['id'])
+                            ->when(
+                                $data['created_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            );
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
 
+                        if ($data['created_from'] ?? null) {
+                            $indicators['created_from'] = 'Created From ' . Carbon::parse($data['created_from'])->toFormattedDateString();
+                        }
 
+                        if ($data['created_until'] ?? null) {
+                            $indicators['created_until'] = 'Created Until ' . Carbon::parse($data['created_until'])->toFormattedDateString();
+                        }
 
-    
+                        return $indicators;
+                    })
+            ]);
     }
-
- 
 }
