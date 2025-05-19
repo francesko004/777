@@ -8,9 +8,6 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Actions\Action;
 
-
-
-
 class ListGames extends ListRecords
 {
     use PlayFiverTrait;
@@ -28,13 +25,12 @@ class ListGames extends ListRecords
         return [
             CreateAction::make()
                 ->icon('heroicon-o-plus')
-                ->label('Novo Jogo')
-            ,
+                ->label('New Game'),
         ];
     }
 
     /**
-     * Carregar todos os provedores
+     * Load all providers
      * @dev  
      * @return void
      */
@@ -45,7 +41,7 @@ class ListGames extends ListRecords
     }
 
     /**
-     * Carregar todos os jogos
+     * Load all games
      * @dev  
      * @return void
      */
@@ -54,6 +50,9 @@ class ListGames extends ListRecords
         self::GetAllGamesGames2Api();
     }
 
+    /**
+     * Load games from provider
+     */
     protected static function LoadingGames()
     {
         self::LoadingGamesWorldSlot();
