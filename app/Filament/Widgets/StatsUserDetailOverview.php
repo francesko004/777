@@ -11,24 +11,23 @@ use App\Helpers\Core as Helper;
 
 class StatsUserDetailOverview extends BaseWidget
 {
-
     public User $record;
 
     public function mount($record)
     {
-       $this->record = $record;
+        $this->record = $record;
     }
 
     /**
      * @return array|Stat[]
-     */ 
+     */
     protected function getStats(): array
     {
         $totalGanhos = Order::where('user_id', $this->record->id)->where('type', 'win')->sum('amount');
         $totalPerdas = Order::where('user_id', $this->record->id)->where('type', 'bet')->sum('amount');
         $totalAfiliados = AffiliateHistory::where('inviter', $this->record->id)->sum('commission_paid');
 
-        // Novos widgets
+        // New widgets
         $trouxeDeDepositantes = AffiliateHistory::where('inviter', $this->record->id)
             ->where('status', 1)
             ->count();
@@ -42,46 +41,46 @@ class StatsUserDetailOverview extends BaseWidget
             ->count();
 
         return [
-            Stat::make('TOTAL DE GANHO', Helper::amountFormatDecimal(Helper::formatNumber($totalGanhos))) 
-                ->description('Total de ganhos das apostas')
+            Stat::make('TOTAL WINNINGS', Helper::amountFormatDecimal(Helper::formatNumber($totalGanhos)))
+                ->description('Total winnings from bets')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('success')
                 ->chart([10, 20, 15, 30, 25, 40, 35])
                 ->chartColor('rgba(59, 130, 246, 0.5)'),
 
-            Stat::make('TOTAL DE PERCAS', Helper::amountFormatDecimal(Helper::formatNumber($totalPerdas)))
-                ->description('Total de perdas das apostas')
+            Stat::make('TOTAL LOSSES', Helper::amountFormatDecimal(Helper::formatNumber($totalPerdas)))
+                ->description('Total losses from bets')
                 ->descriptionIcon('heroicon-m-arrow-trending-down')
                 ->color('danger')
                 ->chart([10, 20, 15, 30, 25, 40, 35])
                 ->chartColor('rgba(59, 130, 246, 0.5)'),
 
-            Stat::make('GANHO COMO AFILIADO', Helper::amountFormatDecimal(Helper::formatNumber($totalAfiliados)))
-                ->description('Total de ganhos como afiliado') 
+            Stat::make('EARNED AS AFFILIATE', Helper::amountFormatDecimal(Helper::formatNumber($totalAfiliados)))
+                ->description('Total earnings as affiliate')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('success')
                 ->chart([10, 20, 15, 30, 25, 40, 35])
                 ->chartColor('rgba(59, 130, 246, 0.5)'),
 
-            // Novo widget: Trouxe de Depositantes
-            Stat::make('TROUXE DE DEPOSITANTES', $trouxeDeDepositantes)
-                ->description('Quantidade de depositantes trazidos')
+            // New widget: Referrals who deposited
+            Stat::make('REFERRED DEPOSITORS', $trouxeDeDepositantes)
+                ->description('Number of referred depositors')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('success')
                 ->chart([10, 20, 15, 30, 25, 40, 35])
                 ->chartColor('rgba(59, 130, 246, 0.5)'),
 
-            // Novo widget: Trouxe de Lucro
-            Stat::make('TROUXE DE LUCRO', Helper::amountFormatDecimal(Helper::formatNumber($trouxeDeLucro)))
-                ->description('Quantidade de lucro trazido')
+            // New widget: Profit brought
+            Stat::make('REFERRED DEPOSITS AMOUNT', Helper::amountFormatDecimal(Helper::formatNumber($trouxeDeLucro)))
+                ->description('Total amount of deposits referred')
                 ->descriptionIcon('heroicon-m-arrow-trending-down')
                 ->color('success')
                 ->chart([10, 20, 15, 30, 25, 40, 35])
                 ->chartColor('rgba(59, 130, 246, 0.5)'),
 
-            // Novo widget: Trouxe de Clientes
-            Stat::make('TROUXE DE CLIENTES', $trouxeDeClientes)
-                ->description('Total de clientes trazidos')
+            // New widget: Total clients referred
+            Stat::make('TOTAL CLIENTS REFERRED', $trouxeDeClientes)
+                ->description('Total number of clients referred')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('success')
                 ->chart([10, 20, 15, 30, 25, 40, 35])
